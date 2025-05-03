@@ -80,17 +80,30 @@ const FinGenie = ({ email }) => {
 
   const fetchBotReply = async (text) => {
     try {
-      const res = await fetch('https://fin-genie-voice-tracker.onrender.com/api/openai', {
+      const res = await fetch('https://your-backend-url/api/gemini', {  // Update to your backend route
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: text }),
       });
+  
+      if (!res.ok) {
+        throw new Error('Failed to fetch response');
+      }
+  
       const data = await res.json();
-      respond(`🤖 ${data.reply}`);
+  
+      // Ensure that the response contains the correct 'reply' field
+      if (data.reply) {
+        respond(`🤖 ${data.reply}`);
+      } else {
+        respond('🤖 Sorry, no valid response received from the server.');
+      }
     } catch (err) {
+      console.error('Error:', err);
       respond("🤖 Sorry, I couldn't fetch a reply.");
     }
   };
+  
   
   
   
