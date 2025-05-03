@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const { GoogleGenerativeAI } = require('@google/generative-ai');
+import { GoogleGenAI } from "@google/genai";
 require('dotenv').config();
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY); // Your Gemini API key in .env
+const genAI = new GoogleGenAI(process.env.GEMINI_API_KEY); // Your Gemini API key in .env
 
 router.post('/', async (req, res) => {
   const { message } = req.body;
