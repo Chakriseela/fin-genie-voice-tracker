@@ -1,0 +1,4 @@
+Update the UI immediately While adding data to the backend 
+
+
+## Before adding voice and chat bot to the project
