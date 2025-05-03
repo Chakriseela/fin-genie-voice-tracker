@@ -20,7 +20,7 @@ connectDB().then(() => {
     app.use('/api/auth', require('./routes/authRoutes'));
     app.use('/api/expenses', require('./routes/expenseRoutes'));
     app.use('/api/income', require('./routes/incomeRoutes'));
-    app.use('/api/gemini', require('./routes/gemini'));
+    app.use('/api/gemini', require('./routes/geminiRoutes'));
 
 
 
