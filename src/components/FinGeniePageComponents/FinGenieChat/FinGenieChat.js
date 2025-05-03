@@ -66,7 +66,7 @@ const FinGenieChat = ({ logout, expenses, totalExpenses, incomeList, totalIncome
     try {
       const messageWithContext = `System: You are a helpful AI financial assistant. For generic greetings like 'hello,' respond with a friendly message or offer assistance with financial queries. User: ${userMessage}`;
   
-      const response = await fetch("https://fin-genie-voice-tracker.onrender.com/api/gemini", {
+      const response = await fetch("http://localhost:5000/api/gemini", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
