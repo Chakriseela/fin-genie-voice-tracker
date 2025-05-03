@@ -80,7 +80,7 @@ const FinGenie = ({ email }) => {
 
   const fetchBotReply = async (text) => {
     try {
-      const res = await fetch('https://your-backend-url/api/gemini', {  // Update to your backend route
+      const res = await fetch('https://fin-genie-voice-tracker.onrender.com/api/gemini', {  // Update to your backend route
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: text }),

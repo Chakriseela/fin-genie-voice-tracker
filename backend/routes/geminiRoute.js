@@ -1,28 +1,53 @@
-// backend/routes/geminiRoute.js
 const express = require("express");
-const { GoogleGenerativeAI } = require("@google/genai");
-
 const router = express.Router();
+const axios = require("axios");
+require("dotenv").config();
 
-// Initialize Gemini AI with API key
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
-// Route: POST /api/gemini
 router.post("/", async (req, res) => {
   const { message } = req.body;
 
-  try {
-    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
-    const result = await model.generateContent(message);
-    const response = await result.response;
-    const text = response.text();
+  if (!message || typeof message !== "string") {
+    return res
+      .status(400)
+      .json({ error: 'Invalid or missing "message" field' });
+  }
 
-    res.json({ reply: text });
+  if (!GEMINI_API_KEY) {
+    return res
+      .status(500)
+      .json({ error: "Missing Gemini API key in environment variables" });
+  }
+
+  try {
+    const response = await axios.post(
+      'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro-latest:generateContent?key=${GEMINI_API_KEY}',
+      {
+        contents: [
+          {
+            parts: [
+              {
+                text: message,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    const reply = response.data?.candidates?.[0]?.content?.parts?.[0]?.text;
+    res.status(200).json({ reply });
   } catch (error) {
-    console.error("Gemini API Error:", error.message);
+    console.error("Gemini API Error:", error?.response?.data || error.message);
     res.status(500).json({
       error: "Gemini API request failed",
-      details: error.message,
+      details: error?.response?.data || error.message,
     });
   }
 });
